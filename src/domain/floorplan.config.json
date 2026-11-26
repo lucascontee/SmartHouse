@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "unit": "FINAL 02",
+    "units": "meters",
+    "ceilingHeight": 2.6,
+    "wallThickness": {
+      "exterior": 0.15,
+      "interiorStructural": 0.15,
+      "interiorPartition": 0.1,
+      "bathroomDivider": 0.16
+    },
+    "footprint": {
+      "internalWidthX": 7.26,
+      "leftDepthZ": 5.3,
+      "rightDepthZ": 6.13
+    }
+  },
+  "rooms": [
+    {
+      "id": "varanda",
+      "label": "Varanda",
+      "bounds": { "x": 0.0, "z": 0.0, "w": 3.35, "d": 0.9 }
+    },
+    {
+      "id": "cozinha_as",
+      "label": "Cozinha / A.S.",
+      "bounds": { "x": 0.0, "z": 1.05, "w": 1.25, "d": 4.25 }
+    },
+    {
+      "id": "sala",
+      "label": "Sala",
+      "bounds": { "x": 1.35, "z": 1.05, "w": 2.0, "d": 4.25 }
+    },
+    {
+      "id": "circulacao",
+      "label": "Circulação",
+      "bounds": { "x": 3.5, "z": 3.13, "w": 1.2, "d": 0.9 }
+    },
+    {
+      "id": "banheiro_suite",
+      "label": "Banheiro Suíte",
+      "bounds": { "x": 3.5, "z": 0.0, "w": 1.2, "d": 2.03 }
+    },
+    {
+      "id": "suite",
+      "label": "Suíte",
+      "shape": "L",
+      "segments": [
+        { "x": 4.86, "z": 0.0, "w": 2.4, "d": 2.98 },
+        { "x": 3.5, "z": 2.13, "w": 1.36, "d": 0.85 }
+      ]
+    },
+    {
+      "id": "banheiro_social",
+      "label": "Banheiro Social",
+      "bounds": { "x": 3.5, "z": 4.13, "w": 1.2, "d": 2.0 }
+    },
+    {
+      "id": "quarto_2",
+      "label": "Quarto 2",
+      "bounds": { "x": 4.86, "z": 3.13, "w": 2.4, "d": 3.0 }
+    }
+  ],
+  "customPartitions": [
+    {
+      "id": "parede_cozinha_sala_base",
+      "start": [1.3, 1.05],
+      "end": [1.3, 2.45],
+      "thickness": 0.1,
+      "height": 2.6,
+      "notes": "Parede divisória original entre cozinha e sala"
+    },
+    {
+      "id": "parede_cozinha_sala_extensao",
+      "start": [1.3, 2.45],
+      "end": [1.3, 3.2],
+      "thickness": 0.1,
+      "height": 1.45,
+      "notes": "Extensão de 75cm x 1,45m de altura"
+    }
+  ],
+  "openings": [
+    { "type": "door", "id": "entrada_apt", "wall": "sala_sul", "x": 1.05, "z": 5.3, "width": 0.8 },
+    { "type": "sliding_door", "id": "acesso_varanda", "wall": "sala_norte", "x": 1.65, "z": 0.97, "width": 1.5 },
+    { "type": "door", "id": "porta_suite", "wall": "circ_norte", "x": 4.05, "z": 3.05, "width": 0.75 },
+    { "type": "door", "id": "porta_banheiro_suite", "wall": "banheiro_suite_sul", "x": 4.1, "z": 2.08, "width": 0.65 },
+    { "type": "door", "id": "porta_quarto_2", "wall": "circ_leste", "x": 4.78, "z": 3.58, "width": 0.75 },
+    { "type": "door", "id": "porta_banheiro_social", "wall": "circ_sul", "x": 4.1, "z": 4.08, "width": 0.65 },
+    { "type": "window", "id": "janela_varanda", "wall": "varanda_norte", "x": 0.1, "z": 0.0, "width": 3.15 },
+    { "type": "window", "id": "janela_banheiro_suite", "wall": "banheiro_suite_norte", "x": 3.8, "z": 0.0, "width": 0.7 },
+    { "type": "window", "id": "janela_suite", "wall": "suite_norte", "x": 5.5, "z": 0.0, "width": 1.4 },
+    { "type": "window", "id": "janela_quarto_2", "wall": "quarto_2_leste", "x": 7.26, "z": 4.2, "width": 1.2 }
+  ],
+  "devices": [
+    { "id": "DEV__light_varanda", "type": "light", "room": "varanda", "position": [1.68, 2.55, 0.45], "capabilities": ["power"] },
+    { "id": "DEV__light_cozinha", "type": "light", "room": "cozinha_as", "position": [0.63, 2.55, 3.18], "capabilities": ["power", "brightness"] },
+    { "id": "DEV__light_sala_superior", "type": "light", "room": "sala", "label": "Luz Sala (Corredor)", "position": [2.75, 2.55, 2.45], "capabilities": ["power", "brightness", "colorTemp"] },
+    { "id": "DEV__light_sala_inferior", "type": "light", "room": "sala", "label": "Luz Sala (Porta)", "position": [1.95, 2.55, 4.75], "capabilities": ["power", "brightness", "colorTemp"] },
+    { "id": "DEV__light_circulacao", "type": "light", "room": "circulacao", "position": [4.1, 2.55, 3.58], "capabilities": ["power"] },
+    { "id": "DEV__light_banheiro_suite", "type": "light", "room": "banheiro_suite", "position": [4.1, 2.55, 1.02], "capabilities": ["power"] },
+    { "id": "DEV__light_suite", "type": "light", "room": "suite", "position": [6.06, 2.55, 1.49], "capabilities": ["power", "brightness", "colorTemp"] },
+    { "id": "DEV__light_banheiro_social", "type": "light", "room": "banheiro_social", "position": [4.1, 2.55, 5.13], "capabilities": ["power"] },
+    { "id": "DEV__light_quarto_2", "type": "light", "room": "quarto_2", "position": [6.06, 2.55, 4.63], "capabilities": ["power", "brightness", "colorTemp"] },
+    { "id": "DEV__ac_sala", "type": "ac", "room": "sala", "position": [3.32, 2.3, 2.05], "facing": "-X", "capabilities": ["power", "temp", "mode", "fanSpeed"] },
+    { "id": "DEV__tv_sala", "type": "tv", "room": "sala", "position": [3.32, 1.2, 2.05], "facing": "-X", "capabilities": ["power", "volume", "mute", "source"] }
+  ]
+}
