@@ -2,17 +2,23 @@ import { Canvas, type ThreeEvent } from '@react-three/fiber';
 import { useCallback, useEffect, useState, type RefObject } from 'react';
 import * as THREE from 'three';
 import { useUiStore } from '../store/useUiStore';
+import { AirflowEffect } from './AirflowEffect';
 import { disposeSceneResources } from './buildProceduralApartment';
 import { CameraRig } from './CameraRig';
 import { MarkerProjector } from './MarkerProjector';
 import { findDeviceIdFromObject, type ParsedApartmentScene } from './parseApartmentScene';
 import { loadApartmentScene, type SceneSource } from './SceneLoader';
+import { TvScreenEffect } from './TvScreenEffect';
 
 export interface ApartmentCanvasProps {
   source?: SceneSource;
   glbUrl?: string;
   markerElementsRef?: RefObject<Map<string, HTMLButtonElement>>;
   onSceneReady?: (scene: ParsedApartmentScene) => void;
+}
+
+export function resolveCanvasFrameloop(isHidden: boolean): 'always' | 'never' {
+  return isHidden ? 'never' : 'always';
 }
 
 function getViewportDpr(): [number, number] {
@@ -34,11 +40,20 @@ export function ApartmentCanvas({
 
   const [parsedScene, setParsedScene] = useState<ParsedApartmentScene | null>(null);
   const [dpr, setDpr] = useState<[number, number]>(getViewportDpr);
+  const [isDocumentHidden, setIsDocumentHidden] = useState<boolean>(
+    () => typeof document !== 'undefined' && document.hidden,
+  );
 
   useEffect(() => {
     const handleResize = () => setDpr(getViewportDpr());
+    const handleVisibilityChange = () => setIsDocumentHidden(document.hidden);
+
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -89,6 +104,7 @@ export function ApartmentCanvas({
   return (
     <Canvas
       dpr={dpr}
+      frameloop={resolveCanvasFrameloop(isDocumentHidden)}
       shadows={false}
       camera={{ position: [0, 8.8, 7.5], fov: 42, near: 0.1, far: 60 }}
       gl={{
@@ -107,6 +123,8 @@ export function ApartmentCanvas({
       {parsedScene && (
         <>
           <CameraRig cameras={parsedScene.cameras} activeRoom={activeRoom} />
+          <AirflowEffect devices={parsedScene.devices} />
+          <TvScreenEffect devices={parsedScene.devices} />
           {markerElementsRef && (
             <MarkerProjector devices={parsedScene.devices} markerElementsRef={markerElementsRef} />
           )}
