@@ -1,0 +1,31 @@
+# Dependências e builds
+node_modules/
+dist/
+dist-ssr/
+.vite/
+coverage/
+*.local
+
+# Variáveis de ambiente, segredos e certificados
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+caddy_data/
+
+# Sistema e IDE
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Artefatos temporários de modelagem e QA
+*.blend1
+*.blend2
+.taste-skill/
