@@ -1,5 +1,5 @@
 import { OrbitControls } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef, type ComponentRef } from 'react';
 import * as THREE from 'three';
 import type { SelectedRoom } from '../store/useUiStore';
@@ -10,8 +10,29 @@ export interface CameraRigProps {
   activeRoom: SelectedRoom;
 }
 
+function computeScaledPosition(
+  preset: CameraPreset,
+  activeRoom: SelectedRoom,
+  aspect: number,
+  out: THREE.Vector3,
+): THREE.Vector3 {
+  const safeAspect = Math.max(aspect, 0.35);
+  const scale =
+    activeRoom === 'all'
+      ? safeAspect < 1.15
+        ? Math.min(2.35, Math.max(1, 1.05 / safeAspect))
+        : 1
+      : safeAspect < 1.0
+        ? Math.min(1.6, Math.max(1, 0.88 / safeAspect))
+        : 1;
+
+  out.copy(preset.position).sub(preset.target).multiplyScalar(scale).add(preset.target);
+  return out;
+}
+
 export function CameraRig({ cameras, activeRoom }: CameraRigProps) {
   const controlsRef = useRef<ComponentRef<typeof OrbitControls>>(null);
+  const { size } = useThree();
   const isTransitioning = useRef(false);
   const hasInitialized = useRef(false);
   const desiredPos = useRef(new THREE.Vector3(0, 8.8, 7.5));
@@ -21,12 +42,13 @@ export function CameraRig({ cameras, activeRoom }: CameraRigProps) {
     const preset = cameras.get(activeRoom) ?? cameras.get('all');
     if (!preset) return;
 
-    desiredPos.current.copy(preset.position);
+    const aspect = size.height > 0 ? size.width / size.height : 1.6;
+    computeScaledPosition(preset, activeRoom, aspect, desiredPos.current);
     desiredTarget.current.copy(preset.target);
 
     if (!hasInitialized.current && controlsRef.current) {
-      controlsRef.current.object.position.copy(preset.position);
-      controlsRef.current.target.copy(preset.target);
+      controlsRef.current.object.position.copy(desiredPos.current);
+      controlsRef.current.target.copy(desiredTarget.current);
       controlsRef.current.update();
       hasInitialized.current = true;
       isTransitioning.current = false;
@@ -35,7 +57,7 @@ export function CameraRig({ cameras, activeRoom }: CameraRigProps) {
 
     hasInitialized.current = true;
     isTransitioning.current = true;
-  }, [activeRoom, cameras]);
+  }, [activeRoom, cameras, size.width, size.height]);
 
   useFrame((state, delta) => {
     if (!isTransitioning.current || !controlsRef.current) return;
@@ -72,7 +94,7 @@ export function CameraRig({ cameras, activeRoom }: CameraRigProps) {
       dampingFactor={0.08}
       maxPolarAngle={Math.PI / 2 - 0.08}
       minDistance={2.2}
-      maxDistance={16}
+      maxDistance={32}
       onStart={() => {
         isTransitioning.current = false;
       }}

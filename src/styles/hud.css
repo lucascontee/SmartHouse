@@ -623,6 +623,20 @@
   }
 }
 
+@media (min-width: 769px) {
+  .hud-layer[data-detail='true'] .hud-topbar {
+    padding-right: calc(360px + var(--s-3));
+  }
+
+  .hud-layer[data-detail='true'] .room-strip {
+    display: none;
+  }
+
+  .hud-layer[data-detail='true'] .room-dropdown {
+    display: flex;
+  }
+}
+
 @media (max-width: 390px) {
   .detail-drawer {
     left: max(var(--s-2), env(safe-area-inset-left));

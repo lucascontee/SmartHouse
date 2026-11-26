@@ -360,21 +360,21 @@ export function buildProceduralApartment(config: FloorplanConfig = floorplanConf
   }
   const wallOps = (wall: string) => openingsByWall.get(wall) ?? [];
 
-  // Materiais sóbrios arquitetônicos para alto contraste com iluminação reativa
-  const dryFloorMat = new THREE.MeshStandardMaterial({ color: '#242429', roughness: 0.86, metalness: 0.05 });
-  const wetFloorMat = new THREE.MeshStandardMaterial({ color: '#1B1B20', roughness: 0.65, metalness: 0.08 });
-  const wallMat = new THREE.MeshStandardMaterial({ color: '#33333A', roughness: 0.88, metalness: 0.04 });
-  const partitionMat = new THREE.MeshStandardMaterial({ color: '#3E3E47', roughness: 0.82, metalness: 0.05 });
-  const frameMat = new THREE.MeshStandardMaterial({ color: '#18181B', roughness: 0.5, metalness: 0.3 });
+  // Materiais sóbrios arquitetônicos com leitura nítida da planta mesmo com luzes desligadas
+  const dryFloorMat = new THREE.MeshStandardMaterial({ color: '#2F3038', roughness: 0.86, metalness: 0.05 });
+  const wetFloorMat = new THREE.MeshStandardMaterial({ color: '#252730', roughness: 0.65, metalness: 0.08 });
+  const wallMat = new THREE.MeshStandardMaterial({ color: '#4A4B56', roughness: 0.85, metalness: 0.04 });
+  const partitionMat = new THREE.MeshStandardMaterial({ color: '#5C5E6B', roughness: 0.8, metalness: 0.05 });
+  const frameMat = new THREE.MeshStandardMaterial({ color: '#1F1F24', roughness: 0.5, metalness: 0.3 });
   const glassMat = new THREE.MeshStandardMaterial({
     color: '#94A3B8',
     roughness: 0.15,
     metalness: 0.1,
     transparent: true,
-    opacity: 0.22,
+    opacity: 0.28,
   });
-  const woodMat = new THREE.MeshStandardMaterial({ color: '#2B2724', roughness: 0.78, metalness: 0.05 });
-  const fabricMat = new THREE.MeshStandardMaterial({ color: '#262830', roughness: 0.92, metalness: 0.02 });
+  const woodMat = new THREE.MeshStandardMaterial({ color: '#3D3631', roughness: 0.78, metalness: 0.05 });
+  const fabricMat = new THREE.MeshStandardMaterial({ color: '#363A45', roughness: 0.9, metalness: 0.02 });
   const housingMat = new THREE.MeshStandardMaterial({ color: '#E4E4E7', roughness: 0.35, metalness: 0.2 });
   const bezelMat = new THREE.MeshStandardMaterial({ color: '#111113', roughness: 0.3, metalness: 0.35 });
 

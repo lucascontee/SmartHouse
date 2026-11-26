@@ -100,9 +100,9 @@ export function ApartmentCanvas({
       onPointerMissed={() => closeInteraction()}
     >
       <color attach="background" args={['#070708']} />
-      <ambientLight intensity={0.38} />
-      <hemisphereLight args={['#E4E4E7', '#18181B', 0.45]} />
-      <directionalLight position={[5, 9, 6]} intensity={0.55} />
+      <ambientLight intensity={0.62} />
+      <hemisphereLight args={['#FAFAFA', '#18181B', 0.72]} />
+      <directionalLight position={[6, 11, 7]} intensity={0.9} />
 
       {parsedScene && (
         <>
