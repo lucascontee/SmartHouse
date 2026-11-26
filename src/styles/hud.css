@@ -13,21 +13,94 @@
 .scene-stage {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   background: var(--bg);
 }
 
-.scene-stage-placeholder {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  color: var(--muted);
-  font-size: var(--t-small);
-  letter-spacing: 0.04em;
+/* ---------------------------------------------------------------- Marcadores 3D Projetados */
+.markers-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
 }
 
+.device-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+  visibility: hidden;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.device-marker__chip {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--muted);
+  transition:
+    background-color var(--m-out, 120ms) var(--ease),
+    border-color var(--m-out, 120ms) var(--ease),
+    color var(--m-out, 120ms) var(--ease);
+}
+
+.device-marker[data-state='on'] .device-marker__chip {
+  border-color: var(--border-active);
+  color: var(--ink);
+}
+
+.device-marker[data-selected='true'] .device-marker__chip {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .device-marker:hover .device-marker__chip {
+    border-color: var(--border-active);
+    color: var(--ink);
+  }
+
+  .device-marker[data-selected='true']:hover .device-marker__chip {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+}
+
+.device-marker__dot {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 5px;
+  height: 5px;
+  background: var(--ink);
+}
+
+.device-marker[data-selected='true'] .device-marker__dot {
+  background: var(--bg);
+}
+
+/* ---------------------------------------------------------------- Camada HUD */
 .hud-layer {
   position: absolute;
   inset: 0;
@@ -54,6 +127,16 @@
   gap: var(--touch-gap);
   width: 100%;
   min-width: 0;
+  pointer-events: none;
+}
+
+.hud-topbar__left,
+.hud-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--touch-gap);
+  min-width: 0;
+  pointer-events: auto;
 }
 
 .hud-badge {
@@ -81,6 +164,93 @@
   background: var(--ink);
 }
 
+.hud-badge__mode {
+  color: var(--muted);
+}
+
+.hud-badge__error {
+  color: var(--ink);
+}
+
+.btn-icon {
+  width: var(--touch-min);
+  min-width: var(--touch-min);
+  padding: 0;
+  flex: none;
+}
+
+/* ---------------------------------------------------------------- Seletor de Cômodos */
+.room-strip {
+  display: none;
+  align-items: center;
+  gap: var(--touch-gap);
+}
+
+.room-strip__btn {
+  padding: 0 var(--s-3);
+  font-size: var(--t-small);
+}
+
+.room-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.room-dropdown__trigger {
+  min-width: 0;
+  max-width: 220px;
+  padding: 0 var(--s-3);
+  font-size: var(--t-small);
+}
+
+.room-dropdown__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.room-popover {
+  position: absolute;
+  top: calc(100% + var(--touch-gap));
+  right: 0;
+  z-index: 20;
+  width: min(240px, calc(100vw - 2 * var(--s-3)));
+  max-height: calc(100dvh - 88px);
+  overflow-y: auto;
+  padding: var(--s-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--touch-gap);
+}
+
+.room-popover__item {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0 var(--s-3);
+  font-size: var(--t-small);
+}
+
+@media (min-width: 1280px) {
+  .room-strip {
+    display: flex;
+  }
+
+  .room-dropdown {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hud-badge__mode {
+    display: none;
+  }
+
+  .room-dropdown__trigger {
+    max-width: 168px;
+  }
+}
+
 @media (max-width: 390px) {
   .hud-layer {
     padding:
@@ -93,5 +263,15 @@
   .hud-badge {
     padding: 0 var(--s-2);
     font-size: var(--t-label);
+  }
+
+  .room-dropdown__trigger {
+    max-width: 146px;
+    padding: 0 var(--s-2);
+    font-size: var(--t-label);
+  }
+
+  .room-popover {
+    width: min(230px, calc(100vw - 2 * var(--s-2)));
   }
 }

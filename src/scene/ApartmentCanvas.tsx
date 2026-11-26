@@ -1,15 +1,17 @@
 import { Canvas, type ThreeEvent } from '@react-three/fiber';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type RefObject } from 'react';
 import * as THREE from 'three';
 import { useUiStore } from '../store/useUiStore';
 import { disposeSceneResources } from './buildProceduralApartment';
 import { CameraRig } from './CameraRig';
+import { MarkerProjector } from './MarkerProjector';
 import { findDeviceIdFromObject, type ParsedApartmentScene } from './parseApartmentScene';
 import { loadApartmentScene, type SceneSource } from './SceneLoader';
 
 export interface ApartmentCanvasProps {
   source?: SceneSource;
   glbUrl?: string;
+  markerElementsRef?: RefObject<Map<string, HTMLButtonElement>>;
   onSceneReady?: (scene: ParsedApartmentScene) => void;
 }
 
@@ -23,6 +25,7 @@ function getViewportDpr(): [number, number] {
 export function ApartmentCanvas({
   source = 'procedural',
   glbUrl,
+  markerElementsRef,
   onSceneReady,
 }: ApartmentCanvasProps) {
   const activeRoom = useUiStore((s) => s.activeRoom);
@@ -104,6 +107,9 @@ export function ApartmentCanvas({
       {parsedScene && (
         <>
           <CameraRig cameras={parsedScene.cameras} activeRoom={activeRoom} />
+          {markerElementsRef && (
+            <MarkerProjector devices={parsedScene.devices} markerElementsRef={markerElementsRef} />
+          )}
           <primitive
             object={parsedScene.root}
             onClick={handleSceneClick}
