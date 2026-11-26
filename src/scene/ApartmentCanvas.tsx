@@ -5,6 +5,7 @@ import { useUiStore } from '../store/useUiStore';
 import { AirflowEffect } from './AirflowEffect';
 import { disposeSceneResources } from './buildProceduralApartment';
 import { CameraRig } from './CameraRig';
+import { LightingRig } from './LightingRig';
 import { MarkerProjector } from './MarkerProjector';
 import { findDeviceIdFromObject, type ParsedApartmentScene } from './parseApartmentScene';
 import { loadApartmentScene, type SceneSource } from './SceneLoader';
@@ -116,13 +117,14 @@ export function ApartmentCanvas({
       onPointerMissed={() => closeInteraction()}
     >
       <color attach="background" args={['#070708']} />
-      <ambientLight intensity={0.62} />
-      <hemisphereLight args={['#FAFAFA', '#18181B', 0.72]} />
-      <directionalLight position={[6, 11, 7]} intensity={0.9} />
+      <ambientLight intensity={0.34} />
+      <hemisphereLight args={['#CBD5E1', '#0F1014', 0.42]} />
+      <directionalLight position={[6, 11, 7]} intensity={0.48} />
 
       {parsedScene && (
         <>
           <CameraRig cameras={parsedScene.cameras} activeRoom={activeRoom} />
+          <LightingRig devices={parsedScene.devices} />
           <AirflowEffect devices={parsedScene.devices} />
           <TvScreenEffect devices={parsedScene.devices} />
           {markerElementsRef && (
