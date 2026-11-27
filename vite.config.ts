@@ -12,6 +12,7 @@ export default defineConfig({
         name: 'SmartHouse 3D',
         short_name: 'SmartHouse',
         description: 'Controle visual 3D local para apartamento inteligente',
+        lang: 'pt-BR',
         display: 'standalone',
         background_color: '#070708',
         theme_color: '#070708',
@@ -47,6 +48,28 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    chunkSizeWarningLimit: 750,
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            { name: 'vendor-three', test: /[\\/]node_modules[\\/]three[\\/]/, priority: 30 },
+            {
+              name: 'vendor-r3f',
+              test: /[\\/]node_modules[\\/](@react-three|three-stdlib|its-fine|suspend-react)[\\/]/,
+              priority: 25,
+            },
+            {
+              name: 'vendor-react',
+              test: /[\\/]node_modules[\\/](react|react-dom|scheduler|zustand)[\\/]/,
+              priority: 20,
+            },
+          ],
+        },
+      },
+    },
+  },
   test: {
     include: ['tests/**/*.test.{ts,tsx}'],
   },

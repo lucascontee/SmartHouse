@@ -649,3 +649,30 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------------------------------------------------------------- Fallback WebGL */
+.scene-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  background: var(--bg);
+  text-align: center;
+}
+
+.scene-fallback__title {
+  margin: 0;
+  font-size: var(--t-body);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.scene-fallback__text {
+  margin: 0 auto;
+  max-width: 38ch;
+  font-size: var(--t-small);
+  line-height: 1.45;
+  color: var(--muted);
+}

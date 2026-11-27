@@ -148,6 +148,7 @@ const NEUTRAL_TINT = new THREE.Color('#E4E4E7');
 function AcUnitAirflow({ node }: AcUnitAirflowProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const reducedRef = useRef(false);
+  const warmedUpRef = useRef(false);
 
   const { geometry, material } = useMemo(
     () => ({
@@ -177,7 +178,8 @@ function AcUnitAirflow({ node }: AcUnitAirflowProps) {
     origin.updateWorldMatrix(true, false);
     origin.getWorldPosition(mesh.position);
     origin.getWorldQuaternion(mesh.quaternion);
-    mesh.visible = false;
+    warmedUpRef.current = false;
+    mesh.visible = true;
   }, [node]);
 
   useEffect(() => {
@@ -190,6 +192,12 @@ function AcUnitAirflow({ node }: AcUnitAirflowProps) {
   useFrame((_, delta) => {
     const mesh = meshRef.current;
     if (!mesh) return;
+
+    if (!warmedUpRef.current) {
+      warmedUpRef.current = true;
+      mesh.visible = true;
+      return;
+    }
 
     const dt = Math.min(delta, 0.1);
     const device = useDeviceStore.getState().devices[node.id] as ClimateDevice | undefined;
@@ -223,7 +231,7 @@ function AcUnitAirflow({ node }: AcUnitAirflowProps) {
     }
   });
 
-  return <mesh ref={meshRef} geometry={geometry} material={material} visible={false} frustumCulled={false} />;
+  return <mesh ref={meshRef} geometry={geometry} material={material} visible={true} frustumCulled={false} />;
 }
 
 export interface AirflowEffectProps {
